@@ -1,10 +1,28 @@
-# Aerospace GNC Simulation
+# Weather-Adaptive Autonomous Rocket GNC Flight Simulation
 
-An educational Python point-mass rocket simulation featuring a vertical proportional-derivative (PD) altitude controller, wind disturbance, aerodynamic drag, fuel use, CSV telemetry, and altitude/3D trajectory plots.
+An educational Python point-mass simulation of rocket flight with vertical proportional-derivative (PD) altitude control, altitude-dependent air density, wind disturbances, aerodynamic drag, and finite fuel. The program exports flight telemetry and generates altitude-versus-time and 3D trajectory plots.
 
-> **Important:** This simplified model is for learning and visualization only. It has not been validated against real vehicle data and must not be used for real vehicle design, guidance, or flight operations. The controller commands vertical thrust only; the wind is modeled as a disturbance acting through drag, not as actively controlled horizontal guidance.
+This simplified model is intended for learning and visualization. It has not been validated against real vehicle data and must not be used for real-world vehicle design, guidance, or flight operations.
 
-## Project layout
+## Project framework and tool-use disclosure
+
+AI tools were used to assist with drafting, refining, and organizing parts of the code and project documentation. The project owner should review and understand the implementation and follow any applicable school, application, or portfolio rules for disclosing AI assistance. Do not represent AI-generated work as exclusively human-authored.
+
+This software is provided as-is for educational and demonstration purposes, without warranties. It is not certified or suitable for operational aviation use.
+
+## Features
+
+- Three-axis point-mass position and velocity model
+- Exponentially decreasing air density with altitude
+- Altitude-varying sinusoidal wind and repeatable random gusts
+- Wind-relative aerodynamic drag
+- Gravity-compensated, bounded vertical PD thrust command
+- Finite fuel tracking and touchdown handling
+- CSV telemetry export and combined altitude/3D trajectory visualization
+
+The controller commands vertical thrust only. Wind affects the simulated vehicle through drag; the model does not actively control horizontal drift or demonstrate validated wind-adaptive stability.
+
+## Project structure
 
 ```text
 .
@@ -17,28 +35,29 @@ An educational Python point-mass rocket simulation featuring a vertical proporti
 └── requirements.txt
 ```
 
-## Run the simulation
+## Requirements
 
 Python 3.9 or newer is recommended.
 
 ```bash
 python -m pip install -r requirements.txt
+```
+
+## Run the simulation
+
+From the repository root:
+
+```bash
 python src/autonomous_rocket.py
 ```
 
-The script creates `data/` and `results/` as needed, then writes:
+The script creates the output directories as needed and writes:
 
 - `data/autonomous_flight_log.csv`
 - `results/autonomous_flight_altitude.png`
 
-Wind gusts use a fixed random seed, making each run reproducible. Ground contact is detected at the end of a simulation step, so touchdown timing is quantized by the 0.05-second time step.
+The telemetry sample count depends on when the simulated flight ends; check the generated CSV before stating a specific number of data rows.
 
-## Model contents
+## Model overview and limitations
 
-- Three-axis point-mass position and velocity.
-- Exponentially decreasing air density and drag based on velocity relative to wind.
-- Altitude-varying sinusoidal wind and seeded random gusts.
-- Bounded vertical PD thrust command with gravity compensation and finite fuel.
-- CSV telemetry and combined altitude/3D trajectory plot.
-
-These assumptions are intentionally simplified; the outputs illustrate the model's behavior rather than predicting the performance of a real rocket.
+The simulation uses a simple point-mass model, a fixed time step, a basic vertical PD controller, and simplified atmospheric and wind assumptions. Its plots illustrate the behavior of this implementation and are not predictions of real rocket performance.
